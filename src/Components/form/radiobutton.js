@@ -5,20 +5,21 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormControl from '@material-ui/core/FormControl';
 import FormLabel from '@material-ui/core/FormLabel';
 
-export default function RadioButton() {
+export default function RadioButton(props) {
 	const [value, setValue] = React.useState('');
+	const index = props.index
 
 	const handleChange = (event) => {
 		setValue(event.target.value)
+		props.returnAnswer(event.target.value, index)
 	};
 
 	return (
 		<div>
-			<h2>PSO chairperson male/female</h2>
+			<h4>{props.title}</h4>
 			<FormControl const='fieldset'>
-				<RadioGroup aria-label="gender" name="gender1" value={value} onChange={handleChange}>
-					<FormControlLabel value="female" control={<Radio/>} label="Female"/>
-					<FormControlLabel value="male" control={<Radio/>} label="Male"/>
+				<RadioGroup aria-label={props.title} name={props.title} value={value} onChange={handleChange}>
+					{props.answers.map((el, i) => <FormControlLabel key={i} value={el} control={<Radio/>} label={el}/>)}
 				</RadioGroup>
 			</FormControl>
 		</div>

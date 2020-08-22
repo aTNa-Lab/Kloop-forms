@@ -4,10 +4,10 @@ import TextField from '@material-ui/core/TextField';
 import FormControl from "@material-ui/core/FormControl";
 
 const useStyles = makeStyles((theme) => ({
-	container: {
-		display: 'flex',
-		flexWrap: 'wrap',
-	},
+	// container: {
+	// 	display: 'flex',
+	// 	flexWrap: 'wrap',
+	// },
 	textField: {
 		marginLeft: theme.spacing(1),
 		marginRight: theme.spacing(1),
@@ -15,18 +15,26 @@ const useStyles = makeStyles((theme) => ({
 	},
 }));
 
-export default function TimePickers() {
+export default function TimePickers(props) {
 	const classes = useStyles();
+	const [value, setValue] = React.useState('');
+	const index = props.index
+
+	const handleChange = (event) => {
+		setValue(event.target.value)
+		props.returnAnswer(event.target.value, index)
+	};
 
 	return (
 		<div>
-			<h2>Time of arrival:</h2>
+			<h4>{props.title}</h4>
 			<form className={classes.container} noValidate>
 				<TextField
 					id="time"
-					label="Alarm clock"
+					label="Время"
 					type="time"
-					defaultValue=""
+					value={value}
+					onChange={handleChange}
 					className={classes.textField}
 					InputLabelProps={{
 						shrink: true,

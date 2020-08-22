@@ -13,7 +13,9 @@ const queryString = require('query-string');
 
 class App extends Component {
   state = {
-    data: {},
+    questions: [],
+    main_title: '',
+    gateway: '',
     answers: {}
   }
 
@@ -32,7 +34,11 @@ class App extends Component {
     })
       .then((data) => {
         console.log("DATA", data);
-        this.setState({data: data})
+        this.setState({
+          questions: data.questions,
+          main_title: data.main_title,
+          gateway: data.gateway
+        })
       });
     }
     else {
@@ -57,21 +63,34 @@ class App extends Component {
   );
   }
 
-  getAnswer = (index, answer) => {
+  returnAnswer = (answer, index) => {
     let answers = {...this.state.answers}
     answers[index] = answer
     this.setState({answers: answers})
   }
 
   render () {
+    let questionList = this.state.questions.map((el, i) => {
+      if (el.type === 'input') {
+        return <TextInput key={i} index={i} title={el.title} returnAnswer={this.returnAnswer} />
+      }
+      else if (el.type === 'select') {
+        return <SelectBox key={i} index={i} title={el.title} answers={el.answer} returnAnswer={this.returnAnswer} />
+      }
+      else if (el.type === 'radio') {
+        return <RadioButton key={i} index={i} title={el.title} answers={el.answer} returnAnswer={this.returnAnswer} />
+      }
+      else if (el.type === 'time') {
+        return <TimePickers key={i} index={i} title={el.title} returnAnswer={this.returnAnswer} />
+      }
+    })
+
     return (
       <div className="App">
+        <h1>{this.state.main_title}</h1>
         <button onClick={() => this.uploadData("HELLo")}></button>
-        <TextInput/>
-        <SelectBox/>
-        <RadioButton/>
-        <TimePickers/>
-        <Next/>
+        <button onClick={() => console.log(this.state)}>Show state</button>
+        {questionList}
       </div>
     );
   }
