@@ -4,7 +4,7 @@ const queryString = require('query-string');
 
 class App extends Component {
   state = {
-    mainState: {}
+    data: {}
   }
 
   componentDidMount() {
@@ -22,7 +22,7 @@ class App extends Component {
     })
       .then((data) => {
         console.log("DATA", data);
-        this.setState({mainState: data})
+        this.setState({data: data})
       });
     }
     else {
@@ -33,7 +33,7 @@ class App extends Component {
   render () {
     return (
       <div className="App">
-        {console.log("STATE", this.state.mainState)}
+        {console.log("STATE", this.state.data)}
       </div>
     );
   }
