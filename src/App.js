@@ -53,7 +53,7 @@ class App extends Component {
   ).then(
     success => console.log(success)
   ).catch(
-    error => console.log("MUHAHAHA", error)
+    error => console.log("Error", error)
   );
   }
 
@@ -66,61 +66,15 @@ class App extends Component {
   render () {
     return (
       <div className="App">
-        {console.log("STATE", this.state)}
-        <h1>{this.state.data.main_title}</h1>
-        {console.log(this.state.answers)}
         <button onClick={() => this.uploadData("HELLo")}></button>
+        <TextInput/>
+        <SelectBox/>
+        <RadioButton/>
+        <TimePickers/>
+        <Next/>
       </div>
     );
   }
-	state = {
-		data: {}
-	}
-
-	componentDidMount() {
-		this.downloadData()
-	}
-
-	downloadData = () => {
-		let urlString = queryString.parse(window.location.search, {decode: false})
-		console.log('it is url string', urlString)
-		if (true) {
-			fetch('https://raw.githubusercontent.com/aTNa-Lab/kloop-forms-config/master/config.json')
-				.then((response) => {
-					console.log("RESPONSE", response)
-					return response.json();
-				})
-				.then((data) => {
-					console.log("DATA", data);
-					this.setState({data: data})
-				});
-		} else {
-			console.log("ERROR: no url detected")
-		}
-	}
-
-	loadForm = () => {
-		for (let i in this.state.data.questions) {
-			console.log('fasdflkja')
-		}
-	}
-
-	render() {
-		return (
-			<div className="App">
-				<Box mx="auto" width="30%">
-					<div className="App">
-						{this.loadForm()}
-						<TextInput/>
-						<SelectBox/>
-						<RadioButton/>
-						<TimePickers/>
-						<Next/>
-					</div>
-				</Box>
-			</div>
-		);
-	}
 }
 
 
