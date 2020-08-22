@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
+import "./App.css"
 
 const queryString = require('query-string');
 
 class App extends Component {
   state = {
-    data: {}
+    data: {},
+    answers: {}
   }
 
   componentDidMount() {
@@ -30,10 +32,36 @@ class App extends Component {
     }
   }
 
+  uploadData = (data) => {
+    fetch('https://example.com/profile', { 
+    method: 'POST',
+    mode: 'no-cors',
+    body: JSON.stringify(data),
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  }).then(
+    response => response.json()
+  ).then(
+    success => console.log(success)
+  ).catch(
+    error => console.log("MUHAHAHA", error)
+  );
+  }
+
+  getAnswer = (index, answer) => {
+    let answers = {...this.state.answers}
+    answers[index] = answer
+    this.setState({answers: answers})
+  }
+
   render () {
     return (
       <div className="App">
-        {console.log("STATE", this.state.data)}
+        {console.log("STATE", this.state)}
+        <h1>{this.state.data.main_title}</h1>
+        {console.log(this.state.answers)}
+        <button onClick={() => this.uploadData("HELLo")}></button>
       </div>
     );
   }
