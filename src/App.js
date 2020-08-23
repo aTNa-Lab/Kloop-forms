@@ -6,6 +6,7 @@ import TextInput from "./Components/form/textInput";
 import SelectBox from "./Components/form/selectBox";
 import RadioButton from "./Components/form/radiobutton";
 import TimePickers from "./Components/form/timePickers";
+import RadioHorizontal from "./Components/form/radioHorizontal";
 import Next from "./Components/form/button";
 
 const queryString = require('query-string');
@@ -94,6 +95,23 @@ class App extends Component {
       </div>
     );
   }
+
+	// render() {
+	// 	return (
+	// 		<div className="App">
+	// 			<Box mx="auto" width="30%">
+	// 				<div className="App">
+	// 					<TextInput />
+	// 					<SelectBox />
+	// 					<RadioButton />
+	// 					<TimePickers />
+	// 					<RadioHorizontal/>
+	// 					<Next/>
+	// 				</div>
+	// 			</Box>
+	// 		</div>
+	// 	);
+	// }
 }
 
 
