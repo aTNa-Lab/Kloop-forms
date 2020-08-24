@@ -96,7 +96,6 @@ class App extends Component {
     return (
       <div className="App">
         <h1 className="text-align-center">{this.state.main_title}</h1>
-        <button onClick={() => this.uploadData("HELLo")}></button>
         {this.state.showAnswers ? <p>{JSON.stringify(this.state.answers)}</p> : null}
         <button onClick={() => this.uploadData({"a":"HELLo"})}>Send data</button>
         <button onClick={() => console.log(this.state)}>Show state</button>
