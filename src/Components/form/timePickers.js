@@ -1,17 +1,19 @@
 import React from 'react';
 import {makeStyles} from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
+import Select from '@material-ui/core/Select';
+import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from "@material-ui/core/FormControl";
 
 const useStyles = makeStyles((theme) => ({
-	// container: {
-	// 	display: 'flex',
-	// 	flexWrap: 'wrap',
-	// },
+	container: {
+		display: 'flex',
+		flexWrap: 'wrap',
+	},
 	textField: {
 		marginLeft: theme.spacing(1),
 		marginRight: theme.spacing(1),
-		width: 200,
+		width: 'auto',
 	},
 }));
 
@@ -24,6 +26,7 @@ export default function TimePickers(props) {
 		setValue(event.target.value)
 		props.returnAnswer(event.target.value, index)
 	};
+
 
 	return (
 		<div>
@@ -39,9 +42,7 @@ export default function TimePickers(props) {
 					InputLabelProps={{
 						shrink: true,
 					}}
-					inputProps={{
-						step: 300,
-					}}
+					InputProps={{disableUnderline: true}}
 				/>
 			</form>
 		</div>

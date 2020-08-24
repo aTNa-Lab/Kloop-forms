@@ -1,22 +1,11 @@
 import React from 'react';
 import Radio from '@material-ui/core/Radio';
-import {makeStyles} from '@material-ui/core/styles';
 import RadioGroup from '@material-ui/core/RadioGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormControl from '@material-ui/core/FormControl';
-
-import Grid from '@material-ui/core/Grid';
-
-const useStyles = makeStyles((theme) => ({
-	root: {
-		flexGrow: 1,
-		alignItems: 'center'
-	},
-}))
-
+import '../../App.css'
 
 export default function RadioHorizontal(props) {
-	const classes = useStyles()
 	const [value, setValue] = React.useState({});
 	const index = props.index
 	let tmp = {}
@@ -29,17 +18,15 @@ export default function RadioHorizontal(props) {
 	};
 
 	return (
-		<div>
+		<div className="radioHorizontal">
 			<h4>{props.title}</h4>
 			<div className="question_item">
-			{props.subquestion.map((question, id) => 
-				<Grid container key={id} className={classes.root} spacing={2}>
-					<Grid item>
+				{props.subquestion.map((question, id) =>
+					<div className="question_item_" key={id}>
 						<p>{question}</p>
-					</Grid>
-					<Grid item>
-						<FormControl component="fieldset">
-							<RadioGroup row aria-label="position" name="position" onChange={handleChange(id)}>
+						<FormControl component="fieldset" className="question_item__answer">
+							<RadioGroup aria-label="position" name="position" className="question_item__answer_"
+							            onChange={handleChange(id)}>
 								{props.answers.map((el, i) =>
 									<FormControlLabel
 										key={i}
@@ -51,10 +38,10 @@ export default function RadioHorizontal(props) {
 								)}
 							</RadioGroup>
 						</FormControl>
-					</Grid>
-				</Grid>
-			)}
+					</div>
+				)}
 			</div>
 		</div>
+
 	);
 }
