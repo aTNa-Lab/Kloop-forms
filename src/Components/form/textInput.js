@@ -29,7 +29,7 @@ function BasicTextFields(props) {
 				<h4>{props.title}</h4>
 				<TextField 
 					className={classes.root}
-					id={props.title}
+					id={"inputBox" + index}
 					label="Мой ответ"
 					value={value}
 					onChange={handleChange}

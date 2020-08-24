@@ -37,7 +37,7 @@ export default function SelectBox(props) {
 				<InputLabel id="controlled-open-select-label">Выбрать</InputLabel>
 				<Select
 					labelId="controlled-open-select-label"
-					id="controlled-open-select"
+					id={"select" + index}
 					open={open}
 					onClose={handleClose}
 					onOpen={handleOpen}

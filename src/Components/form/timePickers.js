@@ -30,7 +30,7 @@ export default function TimePickers(props) {
 			<h4>{props.title}</h4>
 			<form className={classes.container} noValidate>
 				<TextField
-					id={props.title}
+					id={"time" + index}
 					label="Время"
 					type="time"
 					value={value}
