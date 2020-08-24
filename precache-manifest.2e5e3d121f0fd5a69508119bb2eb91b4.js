@@ -1,10 +1,10 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "4632cc820c0de09ea5f96ba4aa46dfa8",
+    "revision": "ba3cc9c5106fd14c8f3166baf97a1824",
     "url": "/Kloop-forms/index.html"
   },
   {
-    "revision": "30a260c114c1dd3b690b",
+    "revision": "7084bd41546e23002015",
     "url": "/Kloop-forms/static/css/main.b6468c35.chunk.css"
   },
   {
@@ -16,8 +16,8 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/Kloop-forms/static/js/2.eec6a21d.chunk.js.LICENSE.txt"
   },
   {
-    "revision": "30a260c114c1dd3b690b",
-    "url": "/Kloop-forms/static/js/main.5a7225f5.chunk.js"
+    "revision": "7084bd41546e23002015",
+    "url": "/Kloop-forms/static/js/main.1c3d31c8.chunk.js"
   },
   {
     "revision": "7a0d36b33168b2a29fe3",
