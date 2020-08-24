@@ -1,0 +1,22 @@
+{
+  "files": {
+    "main.css": "/kloop-forms/static/css/main.5f361e03.chunk.css",
+    "main.js": "/kloop-forms/static/js/main.63fb556a.chunk.js",
+    "main.js.map": "/kloop-forms/static/js/main.63fb556a.chunk.js.map",
+    "runtime-main.js": "/kloop-forms/static/js/runtime-main.a08628a5.js",
+    "runtime-main.js.map": "/kloop-forms/static/js/runtime-main.a08628a5.js.map",
+    "static/js/2.16f2b0e5.chunk.js": "/kloop-forms/static/js/2.16f2b0e5.chunk.js",
+    "static/js/2.16f2b0e5.chunk.js.map": "/kloop-forms/static/js/2.16f2b0e5.chunk.js.map",
+    "index.html": "/kloop-forms/index.html",
+    "precache-manifest.b1429f2a2d0506c6a40e4f2d1c83b4e4.js": "/kloop-forms/precache-manifest.b1429f2a2d0506c6a40e4f2d1c83b4e4.js",
+    "service-worker.js": "/kloop-forms/service-worker.js",
+    "static/css/main.5f361e03.chunk.css.map": "/kloop-forms/static/css/main.5f361e03.chunk.css.map",
+    "static/js/2.16f2b0e5.chunk.js.LICENSE.txt": "/kloop-forms/static/js/2.16f2b0e5.chunk.js.LICENSE.txt"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.a08628a5.js",
+    "static/js/2.16f2b0e5.chunk.js",
+    "static/css/main.5f361e03.chunk.css",
+    "static/js/main.63fb556a.chunk.js"
+  ]
+}
