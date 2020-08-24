@@ -15,109 +15,46 @@ const useStyles = makeStyles((theme) => ({
 }))
 
 
-export default function RadioHorizontal() {
+export default function RadioHorizontal(props) {
 	const classes = useStyles()
+	const [value, setValue] = React.useState({});
+	const index = props.index
+	let tmp = {}
+
+	const handleChange = id => event => {
+		tmp = {...value}
+		tmp[id] = event.target.value
+		setValue(tmp)
+		props.returnAnswer(tmp, index)
+	};
 
 	return (
 		<div>
-			<h2>Вопрос</h2>
+			<h4>{props.title}</h4>
 			<div className="question_item">
-				<Grid container className={classes.root} spacing={2}>
+			{props.subquestion.map((question, id) => 
+				<Grid container key={id} className={classes.root} spacing={2}>
 					<Grid item>
-						<p>Вопрос</p>
+						<p>{question}</p>
 					</Grid>
 					<Grid item>
 						<FormControl component="fieldset">
-							<RadioGroup row aria-label="position" name="position">
-								<FormControlLabel
-									value="Yes"
-									control={<Radio color="primary"/>}
-									label="Yes"
-									labelPlacement="top"
-								/>
-								<FormControlLabel
-									value="No"
-									control={<Radio color="primary"/>}
-									label="No"
-									labelPlacement="top"
-
-								/>
-								<FormControlLabel
-									value="NA"
-									control={<Radio color="primary"/>}
-									label="NA"
-									labelPlacement="top"
-								/>
+							<RadioGroup row aria-label="position" name="position" onChange={handleChange(id)}>
+								{props.answers.map((el, i) =>
+									<FormControlLabel
+										key={i}
+										value={el}
+										control={<Radio color="primary"/>}
+										label={id > 0 ? "" : el}
+										labelPlacement="top"
+									/>
+								)}
 							</RadioGroup>
 						</FormControl>
 					</Grid>
 				</Grid>
-			</div>
-			<div className="question_item">
-				<Grid container className={classes.root} spacing={2}>
-					<Grid item>
-						<p>Вопрос</p>
-					</Grid>
-					<Grid item>
-						<FormControl component="fieldset">
-							<RadioGroup row aria-label="position" name="position">
-								<FormControlLabel
-									value="Yes"
-									control={<Radio color="primary"/>}
-									label=""
-									labelPlacement="top"
-								/>
-								<FormControlLabel
-									value="No"
-									control={<Radio color="primary"/>}
-									label=""
-									labelPlacement="top"
-
-								/>
-								<FormControlLabel
-									value="NA"
-									control={<Radio color="primary"/>}
-									label=""
-									labelPlacement="top"
-								/>
-							</RadioGroup>
-						</FormControl>
-					</Grid>
-				</Grid>
-			</div>
-			<div className="question_item">
-				<Grid container className={classes.root} spacing={2}>
-					<Grid item>
-						<p>Вопрос</p>
-					</Grid>
-					<Grid item>
-						<FormControl component="fieldset">
-							<RadioGroup row aria-label="position" name="position">
-								<FormControlLabel
-									value="Yes"
-									control={<Radio color="primary"/>}
-									label=""
-									labelPlacement="top"
-								/>
-								<FormControlLabel
-									value="No"
-									control={<Radio color="primary"/>}
-									label=""
-									labelPlacement="top"
-
-								/>
-								<FormControlLabel
-									value="NA"
-									control={<Radio color="primary"/>}
-									label=""
-									labelPlacement="top"
-								/>
-							</RadioGroup>
-						</FormControl>
-					</Grid>
-				</Grid>
+			)}
 			</div>
 		</div>
-
 	);
 }

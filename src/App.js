@@ -84,6 +84,9 @@ class App extends Component {
       else if (el.type === 'time') {
         return <TimePickers key={i} index={i} title={el.title} returnAnswer={this.returnAnswer} />
       }
+      else if (el.type === 'multiradio') {
+        return <RadioHorizontal key={i} index={i} title={el.title} subquestion={el.subquestion} answers={el.answer} returnAnswer={this.returnAnswer} />
+      }
     })
 
     return (
@@ -95,23 +98,6 @@ class App extends Component {
       </div>
     );
   }
-
-	// render() {
-	// 	return (
-	// 		<div className="App">
-	// 			<Box mx="auto" width="30%">
-	// 				<div className="App">
-	// 					<TextInput />
-	// 					<SelectBox />
-	// 					<RadioButton />
-	// 					<TimePickers />
-	// 					<RadioHorizontal/>
-	// 					<Next/>
-	// 				</div>
-	// 			</Box>
-	// 		</div>
-	// 	);
-	// }
 }
 
 
