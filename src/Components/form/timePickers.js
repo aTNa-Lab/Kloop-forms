@@ -1,9 +1,6 @@
 import React from 'react';
 import {makeStyles} from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
-import Select from '@material-ui/core/Select';
-import MenuItem from '@material-ui/core/MenuItem';
-import FormControl from "@material-ui/core/FormControl";
 
 const useStyles = makeStyles((theme) => ({
 	container: {
@@ -33,7 +30,7 @@ export default function TimePickers(props) {
 			<h4>{props.title}</h4>
 			<form className={classes.container} noValidate>
 				<TextField
-					id="time"
+					id={props.title}
 					label="Время"
 					type="time"
 					value={value}

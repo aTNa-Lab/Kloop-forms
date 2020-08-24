@@ -1,24 +1,23 @@
 import React, {Component} from 'react';
 import "./App.css"
 
-import Box from '@material-ui/core/Box';
 import TextInput from "./Components/form/textInput";
 import SelectBox from "./Components/form/selectBox";
 import RadioButton from "./Components/form/radiobutton";
 import TimePickers from "./Components/form/timePickers";
 import RadioHorizontal from "./Components/form/radioHorizontal";
-import Next from "./Components/form/button";
 
 const queryString = require('query-string');
 
 
 class App extends Component {
-	state = {
-		questions: [],
-		main_title: '',
-		gateway: '',
-		answers: {}
-	}
+  state = {
+    questions: [],
+    main_title: '',
+    gateway: '',
+    answers: {},
+    showAnswers: false
+  }
 
 	componentDidMount() {
 		this.downloadData()
@@ -46,22 +45,25 @@ class App extends Component {
 		}
 	}
 
-	uploadData = (data) => {
-		fetch('https://example.com/profile', {
-			method: 'POST',
-			mode: 'no-cors',
-			body: JSON.stringify(data),
-			headers: {
-				'Content-Type': 'application/json'
-			}
-		}).then(
-			response => response.json()
-		).then(
-			success => console.log(success)
-		).catch(
-			error => console.log("Error", error)
-		);
-	}
+  uploadData = (data) => {
+    fetch(this.state.gateway, { 
+    method: 'POST',
+    mode: 'no-cors',
+    body: JSON.stringify(data),
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  }).then(
+    response => response.json()
+  ).then(
+    success => console.log(success)
+  ).catch(
+    error => {
+      console.log("Error", error)
+      this.setState({showAnswers: true})
+    }
+  );
+  }
 
 	returnAnswer = (answer, index) => {
 		let answers = {...this.state.answers}
@@ -86,12 +88,17 @@ class App extends Component {
       else if (el.type === 'multiradio') {
         return <RadioHorizontal key={i} index={i} title={el.title} subquestion={el.subquestion} answers={el.answer} returnAnswer={this.returnAnswer} />
       }
+      else {
+        return null
+      }
     })
 
     return (
       <div className="App">
         <h1 className="text-align-center">{this.state.main_title}</h1>
         <button onClick={() => this.uploadData("HELLo")}></button>
+        {this.state.showAnswers ? <p>{JSON.stringify(this.state.answers)}</p> : null}
+        <button onClick={() => this.uploadData({"a":"HELLo"})}>Send data</button>
         <button onClick={() => console.log(this.state)}>Show state</button>
         {questionList}
       </div>

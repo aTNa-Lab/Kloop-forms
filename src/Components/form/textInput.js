@@ -1,7 +1,6 @@
 import React from 'react';
 import {makeStyles} from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
-import Typography from 'material-ui/styles/typography';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -30,7 +29,7 @@ function BasicTextFields(props) {
 				<h4>{props.title}</h4>
 				<TextField 
 					className={classes.root}
-					id="standard-basic"
+					id={props.title}
 					label="Мой ответ"
 					value={value}
 					onChange={handleChange}
