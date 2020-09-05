@@ -21,7 +21,7 @@ export default function TimePickers(props) {
 
 	const handleChange = (event) => {
 		setValue(event.target.value)
-		props.returnAnswer(event.target.value, index)
+		props.returnAnswer(event.target.value, index, event.target.value)
 	};
 
 

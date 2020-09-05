@@ -19,7 +19,8 @@ export default function SelectBox(props) {
 
 	const handleChange = (event) => {
 		setValue(event.target.value);
-		props.returnAnswer(event.target.value, index)
+		let id = props.answers.indexOf(event.target.value)
+		props.returnAnswer(event.target.value, index, id)
 	};
 
 	const handleClose = (event) => {

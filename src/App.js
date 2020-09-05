@@ -1,22 +1,28 @@
 import React, {Component} from 'react';
 import "./App.css"
 
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Link
+} from "react-router-dom";
+
 import TextInput from "./Components/form/textInput";
 import SelectBox from "./Components/form/selectBox";
 import RadioButton from "./Components/form/radiobutton";
 import TimePickers from "./Components/form/timePickers";
 import RadioHorizontal from "./Components/form/radioHorizontal";
 
+import Template from './Components/Template'
+
 const queryString = require('query-string');
 
 
 class App extends Component {
   state = {
-    questions: [],
-    main_title: '',
-    gateway: '',
-    answers: {},
-    showAnswers: false
+    forms: [],
+    mainUrl: ''
   }
 
 	componentDidMount() {
@@ -35,9 +41,8 @@ class App extends Component {
 				.then((data) => {
 					console.log("DATA", data);
 					this.setState({
-						questions: data.questions,
-						main_title: data.main_title,
-						gateway: data.gateway
+            forms: data,
+            mainUrl: urlString.url
 					})
 				});
 		} else {
@@ -45,61 +50,49 @@ class App extends Component {
 		}
 	}
 
-  uploadData = (data) => {
-    fetch(this.state.gateway, { 
-    method: 'POST',
-    mode: 'no-cors',
-    body: JSON.stringify(data),
-    headers: {
-      'Content-Type': 'application/json'
-    }
-  }).then(
-    response => response.json()
-  ).then(
-    success => console.log(success)
-  ).catch(
-    error => {
-      console.log("Error", error)
-      this.setState({showAnswers: true})
-    }
-  );
+  Home = () => {
+    return <h2>Home</h2>;
+  }
+  
+  FormA = () => {
+    return <Template url={'https://raw.githubusercontent.com/aTNa-Lab/kloop-forms-config/master/form_A.json'} />
+  }
+  
+  FormB = () => {
+    return <Template url={'https://raw.githubusercontent.com/aTNa-Lab/kloop-forms-config/master/form_B.json'} />
+  }
+  
+  FormC = () => {
+    return <Template url={'https://raw.githubusercontent.com/aTNa-Lab/kloop-forms-config/master/form_C.json'} />
   }
 
-	returnAnswer = (answer, index) => {
-		let answers = {...this.state.answers}
-		answers[index] = answer
-		this.setState({answers: answers})
-	}
-
   render () {
-    let questionList = this.state.questions.map((el, i) => {
-      if (el.type === 'input') {
-        return <TextInput key={i} index={i} title={el.title} returnAnswer={this.returnAnswer} />
-      }
-      else if (el.type === 'select') {
-        return <SelectBox key={i} index={i} title={el.title} answers={el.answer} returnAnswer={this.returnAnswer} />
-      }
-      else if (el.type === 'radio') {
-        return <RadioButton key={i} index={i} title={el.title} answers={el.answer} returnAnswer={this.returnAnswer} />
-      }
-      else if (el.type === 'time') {
-        return <TimePickers key={i} index={i} title={el.title} returnAnswer={this.returnAnswer} />
-      }
-      else if (el.type === 'multiradio') {
-        return <RadioHorizontal key={i} index={i} title={el.title} subquestion={el.subquestion} answers={el.answer} returnAnswer={this.returnAnswer} />
-      }
-      else {
-        return null
-      }
-    })
-
     return (
       <div className="App">
-        <h1 className="text-align-center">{this.state.main_title}</h1>
-        {this.state.showAnswers ? <p>{JSON.stringify(this.state.answers)}</p> : null}
-        <button onClick={() => this.uploadData({"a":"HELLo"})}>Send data</button>
-        <button onClick={() => console.log(this.state)}>Show state</button>
-        {questionList}
+         <Router>
+          <div>
+            <nav>
+              <ul>
+                <li>
+                  <Link to={"/?url=" + this.state.mainUrl}>Home</Link>
+                </li>
+                {this.state.forms.map((el, i) => (
+                  <li>
+                    <Link key={i} to={el.path + '?url=' + this.state.mainUrl}>{el.label}</Link>
+                  </li>
+                ))}
+              </ul>
+            </nav>
+
+            <Switch>
+              {this.state.forms.map((el, i) => (
+                <Route key={i} path={el.path}>
+                  {() => <Template url={el.url + '?url=' + this.state.mainUrl} />}
+                </Route>
+                ))}
+            </Switch>
+          </div>
+        </Router>
       </div>
     );
   }
