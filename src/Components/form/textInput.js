@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import {makeStyles} from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 
@@ -16,7 +16,14 @@ const useStyles = makeStyles((theme) => ({
 function BasicTextFields(props) {
 	const classes = useStyles();
 	const [value, setValue] = React.useState('');
-	const index = props.index
+
+	const {index, response} = props
+
+	useEffect(() => {
+		if (response) {
+			setValue(response)
+		}
+	}, [response])
 
 	const handleChange = (event) => {
 		setValue(event.target.value)

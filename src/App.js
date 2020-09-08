@@ -30,7 +30,7 @@ class App extends Component {
 	}
 
 	downloadData = () => {
-		let urlString = queryString.parse(window.location.search, {decode: false})
+		let urlString = queryString.parse(window.location.search)
 		console.log(urlString)
 		if (urlString.url) {
 			fetch(urlString.url)
@@ -77,8 +77,8 @@ class App extends Component {
                   <Link to={"/?url=" + this.state.mainUrl}>Home</Link>
                 </li>
                 {this.state.forms.map((el, i) => (
-                  <li>
-                    <Link key={i} to={el.path + '?url=' + this.state.mainUrl}>{el.label}</Link>
+                  <li key={i}>
+                    <Link to={el.path + window.location.search}>{el.label}</Link>
                   </li>
                 ))}
               </ul>
@@ -87,7 +87,7 @@ class App extends Component {
             <Switch>
               {this.state.forms.map((el, i) => (
                 <Route key={i} path={el.path}>
-                  {() => <Template url={el.url + '?url=' + this.state.mainUrl} />}
+                  {() => <Template url={el.url + window.location.search} />}
                 </Route>
                 ))}
             </Switch>

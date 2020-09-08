@@ -17,7 +17,9 @@ class Template extends Component {
       gateway: '',
       answers: {},
       shortAnswers: {},
-      showAnswers: false
+      showAnswers: false,
+      response: {},
+      period: null
     }
   
     componentDidMount() {
@@ -26,7 +28,6 @@ class Template extends Component {
 
     downloadData = () => {
         let urlString = queryString.parse(window.location.search, {decode: false})
-        console.log(urlString)
         if (this.props.url) {
             fetch(this.props.url)
                 .then((response) => {
@@ -38,8 +39,12 @@ class Template extends Component {
                     this.setState({
                         questions: data.questions,
                         main_title: data.main_title,
-                        gateway: data.gateway
+                        gateway: data.gateway,
+                        period: data.period
                     })
+                    if (urlString.response) {
+                      this.initResponse(data, urlString)
+                    }
                 });
         } else {
             console.log("ERROR: no url detected")
@@ -65,6 +70,37 @@ class Template extends Component {
       }
     );
     }
+
+    initResponse = (data, urlString) => {
+      let decodedResponse = decodeURI(urlString.response)
+      let response = JSON.parse(decodedResponse)
+      console.log(response)
+      this.setState({response: response})
+      for (const [key, value] of Object.entries(response)) {
+        let id = null
+        if (key === Object.keys(response)[0]) {
+          this.returnAnswer(value, key)
+        }
+        if (data.questions[key].type === 'input') {
+          this.returnAnswer(value, key)
+        }
+        else if (data.questions[key].type === 'time') {
+          this.returnAnswer(value, key, value)
+        }
+        else if (data.questions[key].type === 'multiradio') {
+          for (const [nestedKey, nestedValue] of Object.entries(value)) {
+            let id = data.questions[key].answer.indexOf(nestedValue)
+            let idArr = {...this.state.shortAnswers[key]}
+            idArr[nestedKey] = id
+            this.returnAnswer(value, key, idArr)
+          }
+        }
+        else {
+          id = data.questions[key].answer.indexOf(value)
+          this.returnAnswer(value, key, id)
+        }
+      }
+    }
   
     returnAnswer = (answer, index, id = null) => {
       let answers = {...this.state.answers}
@@ -79,20 +115,21 @@ class Template extends Component {
   
     render () {
       let questionList = this.state.questions.map((el, i) => {
+        const r = this.state.response
         if (el.type === 'input') {
-          return <TextInput key={i} index={i} title={el.title} returnAnswer={this.returnAnswer} />
+          return <TextInput key={i} index={i} title={el.title} response={r[i]} returnAnswer={this.returnAnswer} />
         }
         else if (el.type === 'select') {
-          return <SelectBox key={i} index={i} title={el.title} answers={el.answer} returnAnswer={this.returnAnswer} />
+          return <SelectBox key={i} index={i} title={el.title} response={r[i]} answers={el.answer} returnAnswer={this.returnAnswer} />
         }
         else if (el.type === 'radio') {
-          return <RadioButton key={i} index={i} title={el.title} answers={el.answer} returnAnswer={this.returnAnswer} />
+          return <RadioButton key={i} index={i} title={el.title} response={r[i]} answers={el.answer} returnAnswer={this.returnAnswer} />
         }
         else if (el.type === 'time') {
-          return <TimePickers key={i} index={i} title={el.title} returnAnswer={this.returnAnswer} />
+          return <TimePickers key={i} index={i} title={el.title} response={r[i]} returnAnswer={this.returnAnswer} />
         }
         else if (el.type === 'multiradio') {
-          return <RadioHorizontal key={i} index={i} title={el.title} subquestion={el.subquestion} answers={el.answer} returnAnswer={this.returnAnswer} />
+          return <RadioHorizontal key={i} index={i} title={el.title} response={r[i]} subquestion={el.subquestion} answers={el.answer} returnAnswer={this.returnAnswer} />
         }
         else {
           return null

@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import Radio from '@material-ui/core/Radio';
 import RadioGroup from '@material-ui/core/RadioGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
@@ -8,9 +8,16 @@ import '../../App.css'
 export default function RadioHorizontal(props) {
 	const [value, setValue] = useState({});
 	const [idx, setIdx] = useState({});
-	const index = props.index
 	let tmp = {}
 	let idTmp = {}
+
+	const {index, response} = props
+
+	useEffect(() => {
+		if (response) {
+			setValue(response)
+		}
+	}, [response])
 
 	const handleChange = id => event => {
 		tmp = {...value}

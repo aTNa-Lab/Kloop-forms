@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import {makeStyles} from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 
@@ -17,7 +17,13 @@ const useStyles = makeStyles((theme) => ({
 export default function TimePickers(props) {
 	const classes = useStyles();
 	const [value, setValue] = React.useState('');
-	const index = props.index
+	const {index, response} = props
+
+	useEffect(() => {
+		if (response) {
+			setValue(response)
+		}
+	}, [index, response])
 
 	const handleChange = (event) => {
 		setValue(event.target.value)
