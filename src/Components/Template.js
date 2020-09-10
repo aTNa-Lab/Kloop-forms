@@ -51,7 +51,9 @@ class Template extends Component {
                     if (urlString.response) {
                       this.initResponse(data, urlString)
                     }
-                    this.timeManager(data)
+                    if (data.period) {
+                      this.timeManager(data)
+                    }
                 });
         } else {
             console.log("ERROR: no url detected")
