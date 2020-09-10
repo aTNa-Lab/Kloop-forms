@@ -40,6 +40,7 @@ function BasicTextFields(props) {
 					label="Мой ответ"
 					value={value}
 					onChange={handleChange}
+					disabled={props.locked ? true : false}
 				/>
 			</form>
 		</div>

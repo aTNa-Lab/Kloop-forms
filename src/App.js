@@ -8,12 +8,6 @@ import {
   Link
 } from "react-router-dom";
 
-import TextInput from "./Components/form/textInput";
-import SelectBox from "./Components/form/selectBox";
-import RadioButton from "./Components/form/radiobutton";
-import TimePickers from "./Components/form/timePickers";
-import RadioHorizontal from "./Components/form/radioHorizontal";
-
 import Template from './Components/Template'
 
 const queryString = require('query-string');
@@ -74,7 +68,7 @@ class App extends Component {
             <nav>
               <ul>
                 <li>
-                  <Link to={"/?url=" + this.state.mainUrl}>Home</Link>
+                  <Link to={"/" + window.location.search}>Home</Link>
                 </li>
                 {this.state.forms.map((el, i) => (
                   <li key={i}>

@@ -25,7 +25,12 @@ export default function RadioButton(props) {
 			<h4>{props.title}</h4>
 			<FormControl const='fieldset'>
 				<RadioGroup aria-label={props.title} name={props.title} value={value} onChange={handleChange}>
-					{props.answers.map((el, i) => <FormControlLabel key={i} value={el} control={<Radio/>} label={el}/>)}
+					{props.answers.map((el, i) => <FormControlLabel 
+													key={i} 
+													value={el} 
+													control={<Radio/>} 
+													label={el} 
+													disabled={props.locked ? true : false} />)}
 				</RadioGroup>
 			</FormControl>
 		</div>

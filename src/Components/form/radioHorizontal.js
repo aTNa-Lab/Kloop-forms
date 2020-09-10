@@ -55,6 +55,7 @@ export default function RadioHorizontal(props) {
 										control={<Radio color="primary"/>}
 										label={id > 0 ? "" : el}
 										labelPlacement="top"
+										disabled={props.locked ? true : false}
 									/>
 								)}
 							</RadioGroup>

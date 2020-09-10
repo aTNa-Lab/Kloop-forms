@@ -46,6 +46,7 @@ export default function TimePickers(props) {
 						shrink: true,
 					}}
 					InputProps={{disableUnderline: true}}
+					disabled={props.locked ? true : false}
 				/>
 			</form>
 		</div>

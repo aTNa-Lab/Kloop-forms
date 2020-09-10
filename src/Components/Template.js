@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import firebase from '../util/Firebase';
 import "../App.css"
 
 import TextInput from "./form/textInput";
@@ -19,11 +20,16 @@ class Template extends Component {
       shortAnswers: {},
       showAnswers: false,
       response: {},
-      period: null
+      period: null,
+      locked: false
     }
+
+    rootRef = firebase.database().ref().child('RE:Message');
+    textRef = this.rootRef.child("d1")
   
     componentDidMount() {
         this.downloadData()
+        this.textRef.push("nice to meet you")
     }
 
     downloadData = () => {
@@ -45,6 +51,7 @@ class Template extends Component {
                     if (urlString.response) {
                       this.initResponse(data, urlString)
                     }
+                    this.timeManager(data)
                 });
         } else {
             console.log("ERROR: no url detected")
@@ -69,6 +76,26 @@ class Template extends Component {
         this.setState({showAnswers: true})
       }
     );
+    }
+
+    timeManager = (data) => {
+      let now = new Date();
+      let start = new Date(data.period.start);
+      let finish = new Date(data.period.finish)
+      console.log(now, start, finish)
+      if (start > now && data.period.before.nofill) {
+        this.setState({locked: true})
+      }
+      else if (start < now && now < finish && data.period.in.nofill) {
+        this.setState({locked: true})
+      }
+      else if (now > finish && data.period.after.nofill) {
+        this.setState({locked: true})
+      }
+      else {
+        this.setState({locked: false})
+      }
+      console.log("LOCKED ", this.state.locked)
     }
 
     initResponse = (data, urlString) => {
@@ -117,19 +144,19 @@ class Template extends Component {
       let questionList = this.state.questions.map((el, i) => {
         const r = this.state.response
         if (el.type === 'input') {
-          return <TextInput key={i} index={i} title={el.title} response={r[i]} returnAnswer={this.returnAnswer} />
+          return <TextInput key={i} index={i} title={el.title} response={r[i]} returnAnswer={this.returnAnswer} locked={this.state.locked} />
         }
         else if (el.type === 'select') {
-          return <SelectBox key={i} index={i} title={el.title} response={r[i]} answers={el.answer} returnAnswer={this.returnAnswer} />
+          return <SelectBox key={i} index={i} title={el.title} response={r[i]} answers={el.answer} returnAnswer={this.returnAnswer} locked={this.state.locked} />
         }
         else if (el.type === 'radio') {
-          return <RadioButton key={i} index={i} title={el.title} response={r[i]} answers={el.answer} returnAnswer={this.returnAnswer} />
+          return <RadioButton key={i} index={i} title={el.title} response={r[i]} answers={el.answer} returnAnswer={this.returnAnswer} locked={this.state.locked} />
         }
         else if (el.type === 'time') {
-          return <TimePickers key={i} index={i} title={el.title} response={r[i]} returnAnswer={this.returnAnswer} />
+          return <TimePickers key={i} index={i} title={el.title} response={r[i]} returnAnswer={this.returnAnswer} locked={this.state.locked} />
         }
         else if (el.type === 'multiradio') {
-          return <RadioHorizontal key={i} index={i} title={el.title} response={r[i]} subquestion={el.subquestion} answers={el.answer} returnAnswer={this.returnAnswer} />
+          return <RadioHorizontal key={i} index={i} title={el.title} response={r[i]} subquestion={el.subquestion} answers={el.answer} returnAnswer={this.returnAnswer} locked={this.state.locked} />
         }
         else {
           return null
@@ -141,7 +168,7 @@ class Template extends Component {
           <h1 className="text-align-center">{this.state.main_title}</h1>
           {questionList}
           <div style={{paddingTop: 20, paddingBottom: 20, textAlign: "center"}}>
-            <button onClick={() => this.uploadData({"a":"HELLo"})}>Send data</button>
+            <button disabled={this.state.locked ? true : false} onClick={() => this.uploadData({"a":"HELLo"})}>Send data</button>
             {this.state.showAnswers ? <p style={{textAlign: "left"}}>Full answers: {JSON.stringify(this.state.answers)}</p> : null}
             {this.state.showAnswers ? <p style={{textAlign: "left"}}>Short answers: {JSON.stringify(this.state.shortAnswers)}</p> : null}
           </div>
