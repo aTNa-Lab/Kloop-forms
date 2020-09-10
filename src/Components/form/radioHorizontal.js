@@ -45,8 +45,8 @@ export default function RadioHorizontal(props) {
 				{props.subquestion.map((question, id) =>
 					<div className="question_item_" key={id}>
 						<p>{question}</p>
-						<FormControl component="fieldset" className="question_item__answer">
-							<RadioGroup aria-label="position" name="position" className="question_item__answer_" value={value[id] ? value[id] : ""}
+						<FormControl component="fieldset">
+							<RadioGroup aria-label="position" name="position" row value={value[id] ? value[id] : ""}
 							            onClick={handleChange(id)}>
 								{props.answers.map((el, i) =>
 									<FormControlLabel
@@ -56,6 +56,7 @@ export default function RadioHorizontal(props) {
 										label={id > 0 ? "" : el}
 										labelPlacement="top"
 										disabled={props.locked ? true : false}
+										style={{paddingLeft: 5, paddingRight: 5}}
 									/>
 								)}
 							</RadioGroup>

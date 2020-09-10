@@ -25,11 +25,9 @@ class Template extends Component {
     }
 
     rootRef = firebase.database().ref().child('RE:Message');
-    textRef = this.rootRef.child("d1")
   
     componentDidMount() {
         this.downloadData()
-        this.textRef.push("nice to meet you")
     }
 
     downloadData = () => {
@@ -60,24 +58,27 @@ class Template extends Component {
         }
     }
   
-    uploadData = (data) => {
-      fetch(this.state.gateway, { 
-      method: 'POST',
-      mode: 'no-cors',
-      body: JSON.stringify(data),
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    }).then(
-      response => response.json()
-    ).then(
-      success => console.log(success)
-    ).catch(
-      error => {
-        console.log("Error", error)
-        this.setState({showAnswers: true})
-      }
-    );
+    uploadData = () => {
+    //   fetch(this.state.gateway, { 
+    //   method: 'POST',
+    //   mode: 'no-cors',
+    //   body: JSON.stringify(data),
+    //   headers: {
+    //     'Content-Type': 'application/json'
+    //   }
+    // }).then(
+    //   response => response.json()
+    // ).then(
+    //   success => console.log(success)
+    // ).catch(
+    //   error => {
+    //     console.log("Error", error)
+    //     this.setState({showAnswers: true})
+    //   }
+    // );
+      let textRef = this.rootRef.child(this.state.main_title)
+      textRef.push(JSON.stringify(this.state.answers))
+      this.setState({showAnswers: true})
     }
 
     timeManager = (data) => {
