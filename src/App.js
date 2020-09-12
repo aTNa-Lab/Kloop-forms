@@ -8,64 +8,22 @@ import {
   Link
 } from "react-router-dom";
 
-import Template from './Components/Template'
-
-const queryString = require('query-string');
+import Home from "./Components/auth/Home";
+import Login from "./Components/auth/Login";
+import SignUp from "./Components/auth/SignUp";
+import { AuthProvider } from "./util/Auth";
+import PrivateRoute from "./util/PrivateRoute";
 
 
 class App extends Component {
-  state = {
-    forms: [],
-    mainUrl: ''
-  }
-
-	componentDidMount() {
-		this.downloadData()
-	}
-
-	downloadData = () => {
-		let urlString = queryString.parse(window.location.search)
-		console.log(urlString)
-		if (urlString.url) {
-			fetch(urlString.url)
-				.then((response) => {
-					console.log("RESPONSE", response)
-					return response.json();
-				})
-				.then((data) => {
-					console.log("DATA", data);
-					this.setState({
-            forms: data,
-            mainUrl: urlString.url
-					})
-				});
-		} else {
-			console.log("ERROR: no url detected")
-		}
-	}
-
-  Home = () => {
-    return <h2>Home</h2>;
-  }
-  
-  FormA = () => {
-    return <Template url={'https://raw.githubusercontent.com/aTNa-Lab/kloop-forms-config/master/form_A.json'} />
-  }
-  
-  FormB = () => {
-    return <Template url={'https://raw.githubusercontent.com/aTNa-Lab/kloop-forms-config/master/form_B.json'} />
-  }
-  
-  FormC = () => {
-    return <Template url={'https://raw.githubusercontent.com/aTNa-Lab/kloop-forms-config/master/form_C.json'} />
-  }
 
   render () {
     return (
       <div className="App">
+      <AuthProvider>
          <Router>
           <div>
-            <nav>
+            {/* <nav>
               <ul>
                 <li>
                   <Link to={"/" + window.location.search}>Home</Link>
@@ -76,17 +34,21 @@ class App extends Component {
                   </li>
                 ))}
               </ul>
-            </nav>
+            </nav> */}
 
-            <Switch>
-              {this.state.forms.map((el, i) => (
+            {/* <Switch> */}
+              <PrivateRoute exact path={"/"} component={Home} />
+              <Route exact path="/login" component={Login} />
+              <Route exact path="/signup" component={SignUp} />
+              {/* {this.state.forms.map((el, i) => (
                 <Route key={i} path={el.path}>
                   {() => <Template url={el.url + window.location.search} />}
                 </Route>
-                ))}
-            </Switch>
+                ))} */}
+            {/* </Switch> */}
           </div>
         </Router>
+        </AuthProvider>
       </div>
     );
   }

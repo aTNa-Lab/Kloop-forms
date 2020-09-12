@@ -1,6 +1,7 @@
-import React, {Component} from 'react';
+import React, {Component, useContext} from 'react';
 import firebase from '../util/Firebase';
 import "../App.css"
+import { AuthContext } from "../util/Auth";
 
 import TextInput from "./form/textInput";
 import SelectBox from "./form/selectBox";
@@ -9,7 +10,6 @@ import TimePickers from "./form/timePickers";
 import RadioHorizontal from "./form/radioHorizontal";
 
 const queryString = require('query-string');
-
 
 class Template extends Component {
     state = {
@@ -25,6 +25,7 @@ class Template extends Component {
     }
 
     rootRef = firebase.database().ref().child('RE:Message');
+    static contextType = AuthContext
   
     componentDidMount() {
         this.downloadData()
@@ -77,8 +78,11 @@ class Template extends Component {
     //   }
     // );
       let textRef = this.rootRef.child(this.state.main_title)
-      textRef.push(JSON.stringify(this.state.answers))
+      console.log("CURRENT USER", this.context.currentUser.displayName)
+      let userRef = textRef.child(this.context.currentUser.displayName)
+      userRef.push(JSON.stringify(this.state.answers))
       this.setState({showAnswers: true})
+      console.log("data uploaded")
     }
 
     timeManager = (data) => {
