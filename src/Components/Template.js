@@ -79,15 +79,16 @@ class Template extends Component {
       }
     }
 
-    uploadFiles = (event) => {
+    uploadFiles = (event, title) => {
       const storageRef = firebase.storage().ref().child("Forms_files");
       const userRef = storageRef.child(this.context.currentUser.uid)
       const formRef = userRef.child(this.state.main_title)
+      const questionRef = formRef.child(title)
 
       const files = event.target.files
       console.log(files)
       Array.from(files).forEach(file => {
-        const fileRef = formRef.child(file.name)
+        const fileRef = questionRef.child(file.name)
         const task = fileRef.put(file)
         task
         .then(snapshot => snapshot.ref.getDownloadURL())
@@ -195,7 +196,7 @@ class Template extends Component {
               <div key={i}>
               {el.attachMaterials ? <div>
                 <h5>{el.title}</h5>
-                <input type="file" name="filefield" multiple="multiple" onChange={this.uploadFiles} />
+                <input type="file" name="filefield" multiple="multiple" onChange={(e) => this.uploadFiles(e, el.title)} />
               </div> : null}
               </div>
             )
