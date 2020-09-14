@@ -62,16 +62,18 @@ class Template extends Component {
   
     uploadData = () => {
       try {
-      let rootRef = firebase.database().ref().child('RE:Message')
-      let userRef = rootRef.child(this.context.currentUser.uid)
-      let formRef = userRef.child(this.state.main_title)
-      formRef.push(JSON.stringify(this.state.answers), err => console.log("ERROR", err))
-      let usernameRef = userRef.child("Username")
-      usernameRef.set(this.context.currentUser.displayName)
-      let emailRef = userRef.child("Email")
-      emailRef.set(this.context.currentUser.email)
-      console.log("data uploaded")
-      this.setState({showFileUpload: true})
+        let rootRef = firebase.database().ref().child('RE:Message')
+        let userRef = rootRef.child(this.context.currentUser.uid)
+        let usernameRef = userRef.child("Username")
+        usernameRef.set(this.context.currentUser.displayName)
+        let emailRef = userRef.child("Email")
+        emailRef.set(this.context.currentUser.email)
+        let formRef = userRef.child(this.state.main_title)
+        let answerRef = formRef.child("Answers")
+        answerRef.push(this.state.answers)
+        console.log("data uploaded")
+        this.setState({showFileUpload: true})
+        this.setState({showAnswers: true})
       }
       catch (err) {
         alert(err)
@@ -91,7 +93,15 @@ class Template extends Component {
         const fileRef = questionRef.child(file.name)
         const task = fileRef.put(file)
         task
-        .then(snapshot => snapshot.ref.getDownloadURL())
+        .then(snapshot => {
+          console.log("SNAPSHOT", snapshot)
+          let rootRef = firebase.database().ref().child('RE:Message')
+          let userRef = rootRef.child(this.context.currentUser.uid)
+          let formRef = userRef.child(this.state.main_title)
+          let filepathsRef = formRef.child("Filepaths")
+          filepathsRef.push(snapshot.metadata.fullPath)
+          return snapshot.ref.getDownloadURL()
+        })
         .then((url) => {
           console.log(url);
         })
@@ -191,12 +201,14 @@ class Template extends Component {
       return (
         <div>
           <h1 className="text-align-center">{this.state.main_title}</h1>
+          {this.state.showAnswers ? <p style={{textAlign: "left"}}>Full answers: {JSON.stringify(this.state.answers)}</p> : null}
+          {this.state.showAnswers ? <p style={{textAlign: "left"}}>Short answers: {JSON.stringify(this.state.shortAnswers)}</p> : null}
           {this.state.showFileUpload ? this.state.questions.map((el, i) => {
             return (
               <div key={i}>
               {el.attachMaterials ? <div>
                 <h5>{el.title}</h5>
-                <input type="file" name="filefield" multiple="multiple" onChange={(e) => this.uploadFiles(e, el.title)} />
+                <input type="file" name="filefield" multiple="multiple" onChange={(e) => this.uploadFiles(e, i.toString())} />
               </div> : null}
               </div>
             )
@@ -204,9 +216,7 @@ class Template extends Component {
             <div>
             {questionList}
             <div style={{paddingTop: 20, paddingBottom: 20, textAlign: "center"}}>
-            <button disabled={this.state.locked ? true : false} onClick={() => this.uploadData({"a":"HELLo"})}>Send data</button>
-            {this.state.showAnswers ? <p style={{textAlign: "left"}}>Full answers: {JSON.stringify(this.state.answers)}</p> : null}
-            {this.state.showAnswers ? <p style={{textAlign: "left"}}>Short answers: {JSON.stringify(this.state.shortAnswers)}</p> : null}
+            <button disabled={this.state.locked ? true : false} onClick={this.uploadData}>Send data</button>
             </div>
             </div>
           )}

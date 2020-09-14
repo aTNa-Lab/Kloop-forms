@@ -25,13 +25,13 @@ class App extends Component {
           <div>
             <nav>
             <li>
-                <Link to={"/" + window.location.search}>Home</Link>
+                <Link to={"/Kloop-forms" + window.location.search}>Home</Link>
             </li>
             </nav>
 
-              <PrivateRoute exact path={"/"} component={Home} />
-              <Route exact path="/login" component={Login} />
-              <Route exact path="/signup" component={SignUp} />
+              <PrivateRoute exact path={"/Kloop-forms"} component={Home} />
+              <Route exact path="/Kloop-forms/login" component={Login} />
+              <Route exact path="/Kloop-forms/signup" component={SignUp} />
           </div>
         </Router>
         </AuthProvider>

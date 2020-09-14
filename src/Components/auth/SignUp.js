@@ -10,7 +10,7 @@ const SignUp = ({ history }) => {
       await app
         .auth()
         .createUserWithEmailAndPassword(email.value, password.value);
-      history.push("/");
+      history.push("/Kloop-forms");
     } catch (error) {
       alert(error);
     }
