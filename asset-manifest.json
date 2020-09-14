@@ -1,22 +1,22 @@
 {
   "files": {
     "main.css": "/Kloop-forms/static/css/main.01dcf894.chunk.css",
-    "main.js": "/Kloop-forms/static/js/main.696b67db.chunk.js",
-    "main.js.map": "/Kloop-forms/static/js/main.696b67db.chunk.js.map",
+    "main.js": "/Kloop-forms/static/js/main.e7dd529a.chunk.js",
+    "main.js.map": "/Kloop-forms/static/js/main.e7dd529a.chunk.js.map",
     "runtime-main.js": "/Kloop-forms/static/js/runtime-main.dfcf727d.js",
     "runtime-main.js.map": "/Kloop-forms/static/js/runtime-main.dfcf727d.js.map",
-    "static/js/2.be74a30c.chunk.js": "/Kloop-forms/static/js/2.be74a30c.chunk.js",
-    "static/js/2.be74a30c.chunk.js.map": "/Kloop-forms/static/js/2.be74a30c.chunk.js.map",
+    "static/js/2.21a00361.chunk.js": "/Kloop-forms/static/js/2.21a00361.chunk.js",
+    "static/js/2.21a00361.chunk.js.map": "/Kloop-forms/static/js/2.21a00361.chunk.js.map",
     "index.html": "/Kloop-forms/index.html",
-    "precache-manifest.befe42b8102de0d344b49370b1bce115.js": "/Kloop-forms/precache-manifest.befe42b8102de0d344b49370b1bce115.js",
+    "precache-manifest.4c3988bd2c137062e615972e1d6dd7ad.js": "/Kloop-forms/precache-manifest.4c3988bd2c137062e615972e1d6dd7ad.js",
     "service-worker.js": "/Kloop-forms/service-worker.js",
     "static/css/main.01dcf894.chunk.css.map": "/Kloop-forms/static/css/main.01dcf894.chunk.css.map",
-    "static/js/2.be74a30c.chunk.js.LICENSE.txt": "/Kloop-forms/static/js/2.be74a30c.chunk.js.LICENSE.txt"
+    "static/js/2.21a00361.chunk.js.LICENSE.txt": "/Kloop-forms/static/js/2.21a00361.chunk.js.LICENSE.txt"
   },
   "entrypoints": [
     "static/js/runtime-main.dfcf727d.js",
-    "static/js/2.be74a30c.chunk.js",
+    "static/js/2.21a00361.chunk.js",
     "static/css/main.01dcf894.chunk.css",
-    "static/js/main.696b67db.chunk.js"
+    "static/js/main.e7dd529a.chunk.js"
   ]
 }
