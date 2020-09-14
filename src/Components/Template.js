@@ -21,10 +21,11 @@ class Template extends Component {
       showAnswers: false,
       response: {},
       period: null,
-      locked: false
+      locked: false,
+      files: {},
+      showFileUpload: false
     }
 
-    rootRef = firebase.database().ref().child('RE:Message');
     static contextType = AuthContext
   
     componentDidMount() {
@@ -60,29 +61,41 @@ class Template extends Component {
     }
   
     uploadData = () => {
-    //   fetch(this.state.gateway, { 
-    //   method: 'POST',
-    //   mode: 'no-cors',
-    //   body: JSON.stringify(data),
-    //   headers: {
-    //     'Content-Type': 'application/json'
-    //   }
-    // }).then(
-    //   response => response.json()
-    // ).then(
-    //   success => console.log(success)
-    // ).catch(
-    //   error => {
-    //     console.log("Error", error)
-    //     this.setState({showAnswers: true})
-    //   }
-    // );
-      let textRef = this.rootRef.child(this.state.main_title)
-      console.log("CURRENT USER", this.context.currentUser.displayName)
-      let userRef = textRef.child(this.context.currentUser.displayName)
-      userRef.push(JSON.stringify(this.state.answers))
-      this.setState({showAnswers: true})
+      try {
+      let rootRef = firebase.database().ref().child('RE:Message')
+      let userRef = rootRef.child(this.context.currentUser.uid)
+      let formRef = userRef.child(this.state.main_title)
+      formRef.push(JSON.stringify(this.state.answers), err => console.log("ERROR", err))
+      let usernameRef = userRef.child("Username")
+      usernameRef.set(this.context.currentUser.displayName)
+      let emailRef = userRef.child("Email")
+      emailRef.set(this.context.currentUser.email)
       console.log("data uploaded")
+      this.setState({showFileUpload: true})
+      }
+      catch (err) {
+        alert(err)
+        this.setState({showAnswers: true})
+      }
+    }
+
+    uploadFiles = (event) => {
+      const storageRef = firebase.storage().ref().child("Forms_files");
+      const userRef = storageRef.child(this.context.currentUser.uid)
+      const formRef = userRef.child(this.state.main_title)
+
+      const files = event.target.files
+      console.log(files)
+      Array.from(files).forEach(file => {
+        const fileRef = formRef.child(file.name)
+        const task = fileRef.put(file)
+        task
+        .then(snapshot => snapshot.ref.getDownloadURL())
+        .then((url) => {
+          console.log(url);
+        })
+        .catch(console.error);
+      })
     }
 
     timeManager = (data) => {
@@ -150,20 +163,24 @@ class Template extends Component {
     render () {
       let questionList = this.state.questions.map((el, i) => {
         const r = this.state.response
+        let attachment = false
+        if (el.attachMaterials) {
+          attachment = true
+        }
         if (el.type === 'input') {
-          return <TextInput key={i} index={i} title={el.title} response={r[i]} returnAnswer={this.returnAnswer} locked={this.state.locked} />
+          return <TextInput key={i} index={i} title={el.title} response={r[i]} attachment={attachment} returnAnswer={this.returnAnswer} locked={this.state.locked} />
         }
         else if (el.type === 'select') {
-          return <SelectBox key={i} index={i} title={el.title} response={r[i]} answers={el.answer} returnAnswer={this.returnAnswer} locked={this.state.locked} />
+          return <SelectBox key={i} index={i} title={el.title} response={r[i]} attachment={attachment} answers={el.answer} returnAnswer={this.returnAnswer} locked={this.state.locked} />
         }
         else if (el.type === 'radio') {
-          return <RadioButton key={i} index={i} title={el.title} response={r[i]} answers={el.answer} returnAnswer={this.returnAnswer} locked={this.state.locked} />
+          return <RadioButton key={i} index={i} title={el.title} response={r[i]} attachment={attachment} answers={el.answer} returnAnswer={this.returnAnswer} locked={this.state.locked} />
         }
         else if (el.type === 'time') {
-          return <TimePickers key={i} index={i} title={el.title} response={r[i]} returnAnswer={this.returnAnswer} locked={this.state.locked} />
+          return <TimePickers key={i} index={i} title={el.title} response={r[i]} attachment={attachment} returnAnswer={this.returnAnswer} locked={this.state.locked} />
         }
         else if (el.type === 'multiradio') {
-          return <RadioHorizontal key={i} index={i} title={el.title} response={r[i]} subquestion={el.subquestion} answers={el.answer} returnAnswer={this.returnAnswer} locked={this.state.locked} />
+          return <RadioHorizontal key={i} index={i} title={el.title} response={r[i]} attachment={attachment} subquestion={el.subquestion} answers={el.answer} returnAnswer={this.returnAnswer} locked={this.state.locked} />
         }
         else {
           return null
@@ -173,12 +190,25 @@ class Template extends Component {
       return (
         <div>
           <h1 className="text-align-center">{this.state.main_title}</h1>
-          {questionList}
-          <div style={{paddingTop: 20, paddingBottom: 20, textAlign: "center"}}>
+          {this.state.showFileUpload ? this.state.questions.map((el, i) => {
+            return (
+              <div key={i}>
+              {el.attachMaterials ? <div>
+                <h5>{el.title}</h5>
+                <input type="file" name="filefield" multiple="multiple" onChange={this.uploadFiles} />
+              </div> : null}
+              </div>
+            )
+          }) : (
+            <div>
+            {questionList}
+            <div style={{paddingTop: 20, paddingBottom: 20, textAlign: "center"}}>
             <button disabled={this.state.locked ? true : false} onClick={() => this.uploadData({"a":"HELLo"})}>Send data</button>
             {this.state.showAnswers ? <p style={{textAlign: "left"}}>Full answers: {JSON.stringify(this.state.answers)}</p> : null}
             {this.state.showAnswers ? <p style={{textAlign: "left"}}>Short answers: {JSON.stringify(this.state.shortAnswers)}</p> : null}
-          </div>
+            </div>
+            </div>
+          )}
         </div>
       );
     }

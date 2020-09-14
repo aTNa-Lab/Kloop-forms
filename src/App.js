@@ -23,29 +23,15 @@ class App extends Component {
       <AuthProvider>
          <Router>
           <div>
-            {/* <nav>
-              <ul>
-                <li>
-                  <Link to={"/" + window.location.search}>Home</Link>
-                </li>
-                {this.state.forms.map((el, i) => (
-                  <li key={i}>
-                    <Link to={el.path + window.location.search}>{el.label}</Link>
-                  </li>
-                ))}
-              </ul>
-            </nav> */}
+            <nav>
+            <li>
+                <Link to={"/" + window.location.search}>Home</Link>
+            </li>
+            </nav>
 
-            {/* <Switch> */}
               <PrivateRoute exact path={"/"} component={Home} />
               <Route exact path="/login" component={Login} />
               <Route exact path="/signup" component={SignUp} />
-              {/* {this.state.forms.map((el, i) => (
-                <Route key={i} path={el.path}>
-                  {() => <Template url={el.url + window.location.search} />}
-                </Route>
-                ))} */}
-            {/* </Switch> */}
           </div>
         </Router>
         </AuthProvider>

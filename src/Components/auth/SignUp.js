@@ -19,7 +19,7 @@ const SignUp = ({ history }) => {
   return (
     <div>
       <h1>Sign up</h1>
-      <form onSubmit={handleSignUp}>
+      {/* <form onSubmit={handleSignUp}>
         <label>
           Email
           <input name="email" type="email" placeholder="Email" />
@@ -29,7 +29,7 @@ const SignUp = ({ history }) => {
           <input name="password" type="password" placeholder="Password" />
         </label>
         <button type="submit">Sign Up</button>
-      </form>
+      </form> */}
       <button onClick={signInWithGoogle}>Sign-in with Google</button>
     </div>
   );
