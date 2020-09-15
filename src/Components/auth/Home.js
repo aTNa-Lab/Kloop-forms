@@ -51,7 +51,7 @@ const Home = () => {
             <Switch>
               {forms.map((el, i) => (
                 <Route key={i} path={"/Kloop-forms" + el.path}>
-                  {() => <Template url={el.url + window.location.search} />}
+                  {() => <Template url={el.url + window.location.search} path={el.path} />}
                 </Route>
                 ))}
             </Switch>

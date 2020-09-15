@@ -22,7 +22,7 @@ class Template extends Component {
       response: {},
       period: null,
       locked: false,
-      files: {},
+      files: [],
       showFileUpload: false
     }
 
@@ -72,13 +72,36 @@ class Template extends Component {
         let answerRef = formRef.child("Answers")
         answerRef.push(this.state.answers)
         console.log("data uploaded")
-        this.setState({showFileUpload: true})
+        // this.setState({showFileUpload: true})
         this.setState({showAnswers: true})
+        this.loadAttachmentQuestions()
       }
       catch (err) {
         alert(err)
         this.setState({showAnswers: true})
       }
+    }
+
+    loadAttachmentQuestions = () => {
+      let rootRef = firebase.database().ref().child('RE:Message')
+      let userRef = rootRef.child(this.context.currentUser.uid)
+      let formRef = userRef.child(this.state.main_title)
+      let answerRef = formRef.child("Answers")
+
+      answerRef.on('value', snap => {
+         let answersList = Object.values(snap.val())
+         let answer = answersList[answersList.length - 1]
+         console.log(answer)
+         for (const [key, value] of Object.entries(answer)) {
+           if (value.m === "") {
+              console.log(key, value)
+              let file = [...this.state.files]
+              file.push(key)
+              this.setState({files: file})
+           }
+         }
+      })
+      this.setState({showFileUpload: true})
     }
 
     uploadFiles = (event, title) => {
@@ -162,7 +185,12 @@ class Template extends Component {
   
     returnAnswer = (answer, index, id = null) => {
       let answers = {...this.state.answers}
-      answers[index] = answer
+      if (this.state.questions[index].attachMaterials) {
+        answers[index] = {a: answer, m: ""}
+      }
+      else {
+        answers[index] = answer
+      }
       this.setState({answers: answers})
 
       let shortAnswers = {...this.state.shortAnswers}
@@ -174,24 +202,21 @@ class Template extends Component {
     render () {
       let questionList = this.state.questions.map((el, i) => {
         const r = this.state.response
-        let attachment = false
-        if (el.attachMaterials) {
-          attachment = true
-        }
+
         if (el.type === 'input') {
-          return <TextInput key={i} index={i} title={el.title} response={r[i]} attachment={attachment} returnAnswer={this.returnAnswer} locked={this.state.locked} />
+          return <TextInput key={i} index={i} title={el.title} response={r[i]} returnAnswer={this.returnAnswer} locked={this.state.locked} />
         }
         else if (el.type === 'select') {
-          return <SelectBox key={i} index={i} title={el.title} response={r[i]} attachment={attachment} answers={el.answer} returnAnswer={this.returnAnswer} locked={this.state.locked} />
+          return <SelectBox key={i} index={i} title={el.title} response={r[i]} answers={el.answer} returnAnswer={this.returnAnswer} locked={this.state.locked} />
         }
         else if (el.type === 'radio') {
-          return <RadioButton key={i} index={i} title={el.title} response={r[i]} attachment={attachment} answers={el.answer} returnAnswer={this.returnAnswer} locked={this.state.locked} />
+          return <RadioButton key={i} index={i} title={el.title} response={r[i]} answers={el.answer} returnAnswer={this.returnAnswer} locked={this.state.locked} />
         }
         else if (el.type === 'time') {
-          return <TimePickers key={i} index={i} title={el.title} response={r[i]} attachment={attachment} returnAnswer={this.returnAnswer} locked={this.state.locked} />
+          return <TimePickers key={i} index={i} title={el.title} response={r[i]} returnAnswer={this.returnAnswer} locked={this.state.locked} />
         }
         else if (el.type === 'multiradio') {
-          return <RadioHorizontal key={i} index={i} title={el.title} response={r[i]} attachment={attachment} subquestion={el.subquestion} answers={el.answer} returnAnswer={this.returnAnswer} locked={this.state.locked} />
+          return <RadioHorizontal key={i} index={i} title={el.title} response={r[i]} subquestion={el.subquestion} answers={el.answer} returnAnswer={this.returnAnswer} locked={this.state.locked} />
         }
         else {
           return null
@@ -201,15 +226,12 @@ class Template extends Component {
       return (
         <div>
           <h1 className="text-align-center">{this.state.main_title}</h1>
-          {this.state.showAnswers ? <p style={{textAlign: "left"}}>Full answers: {JSON.stringify(this.state.answers)}</p> : null}
-          {this.state.showAnswers ? <p style={{textAlign: "left"}}>Short answers: {JSON.stringify(this.state.shortAnswers)}</p> : null}
-          {this.state.showFileUpload ? this.state.questions.map((el, i) => {
+          {this.state.showFileUpload ? this.state.files.map((key, i) => {
+            let el = this.state.questions[key]
             return (
               <div key={i}>
-              {el.attachMaterials ? <div>
                 <h5>{el.title}</h5>
-                <input type="file" name="filefield" multiple="multiple" onChange={(e) => this.uploadFiles(e, i.toString())} />
-              </div> : null}
+                <input type="file" name="filefield" multiple="multiple" onChange={(e) => this.uploadFiles(e, key.toString())} />
               </div>
             )
           }) : (
@@ -220,6 +242,8 @@ class Template extends Component {
             </div>
             </div>
           )}
+          {this.state.showAnswers ? <p style={{textAlign: "left"}}>Full answers: {JSON.stringify(this.state.answers)}</p> : null}
+          {this.state.showAnswers ? <p style={{textAlign: "left"}}>Short answers: {JSON.stringify(this.state.shortAnswers)}</p> : null}
         </div>
       );
     }
