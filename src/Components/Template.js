@@ -89,17 +89,20 @@ class Template extends Component {
       let answerRef = formRef.child("Answers")
 
       answerRef.on('value', snap => {
-         let answersList = Object.values(snap.val())
-         let answer = answersList[answersList.length - 1]
-         console.log(answer)
-         for (const [key, value] of Object.entries(answer)) {
-           if (value.m === "") {
+        if (snap.val()) {
+          console.log("SNAP", snap.val())
+          let answersList = Object.values(snap.val())
+          let answer = answersList[answersList.length - 1]
+          console.log(answer)
+          for (const [key, value] of Object.entries(answer)) {
+            if (value.m === "") {
               console.log(key, value)
               let file = [...this.state.files]
               file.push(key)
               this.setState({files: file})
            }
          }
+        }
       })
       this.setState({showFileUpload: true})
     }
