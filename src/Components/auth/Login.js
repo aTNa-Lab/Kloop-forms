@@ -23,7 +23,7 @@ const Login = ({ history }) => {
   const { currentUser } = useContext(AuthContext);
 
   if (currentUser) {
-    return <Redirect to={"/Kloop-forms" + window.location.search} />;
+    return <Redirect to={"/" + window.location.search} />;
   }
 
   return (

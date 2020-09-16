@@ -5,7 +5,8 @@ import {
   BrowserRouter as Router,
   Switch,
   Route,
-  Link
+  Link,
+  withRouter 
 } from "react-router-dom";
 
 import Home from "./Components/auth/Home";
@@ -24,15 +25,16 @@ class App extends Component {
       <AuthProvider>
          <Router>
           <div>
-            <nav>
-            <li>
-                <Link to={"/Kloop-forms" + window.location.search}>Home</Link>
-            </li>
-            </nav>
-              <Route path="/Kloop-forms/files" component={FileUploader} />
-              <PrivateRoute exact path={"/Kloop-forms"} component={Home} />
-              <Route exact path="/Kloop-forms/login" component={Login} />
-              <Route exact path="/Kloop-forms/signup" component={SignUp} />
+            {/* <nav>
+              <li>
+                  <Link to={"/?url" + window.location.search}>Home</Link>
+              </li>
+            </nav> */}
+
+              <PrivateRoute exact path={"/"} component={Home} />
+              <Route exact path="/login" component={Login} />
+              <Route exact path="/signup" component={SignUp} />
+              <Route exact path="/files" component={withRouter(FileUploader)} />
           </div>
         </Router>
         </AuthProvider>
