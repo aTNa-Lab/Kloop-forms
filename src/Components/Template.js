@@ -173,7 +173,7 @@ class Template extends Component {
       return (
         <div>
           <h1 className="text-align-center">{this.state.main_title}</h1>
-          {this.state.showFileUpload ? <Redirect to={"/files?url=" + this.props.url} /> : null}
+          {this.state.showFileUpload ? <Redirect to={"/Kloop-forms/files?url=" + this.props.url} /> : null}
           <div>
             {questionList}
             <div style={{paddingTop: 20, paddingBottom: 20, textAlign: "center"}}>

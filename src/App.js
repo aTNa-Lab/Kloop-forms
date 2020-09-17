@@ -31,10 +31,10 @@ class App extends Component {
               </li>
             </nav> */}
 
-              <PrivateRoute exact path={"/"} component={Home} />
-              <Route exact path="/login" component={Login} />
-              <Route exact path="/signup" component={SignUp} />
-              <Route exact path="/files" component={withRouter(FileUploader)} />
+              <PrivateRoute exact path={"/Kloop-forms/"} component={Home} />
+              <Route exact path="/Kloop-forms/login" component={Login} />
+              <Route exact path="/Kloop-forms/signup" component={SignUp} />
+              <Route exact path="/Kloop-forms/files" component={withRouter(FileUploader)} />
           </div>
         </Router>
         </AuthProvider>
